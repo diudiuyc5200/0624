@@ -78,10 +78,8 @@ void task_mem(struct seq_file *m, struct mm_struct *mm)
 		    " kB\nVmExe:\t", text >> 10, 8);
 	seq_put_decimal_ull_width(m,
 		    " kB\nVmLib:\t", lib >> 10, 8);
-	unsigned long pgtables_bytes = PTRS_PER_PTE * sizeof(pte_t) * atomic_long_read(&mm->nr_ptes) +
-                               PTRS_PER_PMD * sizeof(pmd_t) * mm_nr_pmds(mm);
-seq_put_decimal_ull_width(m,
-    " kB\nVmPTE:\t", pgtables_bytes >> 10, 8);
+	seq_put_decimal_ull_width(m,
+		    " kB\nVmPTE:\t", mm_pgtables_bytes(mm) >> 10, 8);
 	SEQ_PUT_DEC(" kB\nVmSwap:\t", swap);
 	seq_puts(m, " kB\n");
 	hugetlb_report_usage(m, mm);
